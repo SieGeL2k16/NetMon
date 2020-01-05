@@ -1,0 +1,117 @@
+            Program-History for NetMon by Sascha 'SieGeL' Pfalz
+-----------------------------------------------------------------------------
+V0.35 (26-Dec-2006) - PPC: Made code gcc 4.0.2 compatible (SDK 51.22) - There
+                           are a lot of type checking issues resolved.
+
+V0.34 (07-Nov-2004) - ALL: Next public release
+
+      (23-Oct-2004) - ALL: Enhanced Tooltype/Parameter NOWINBORDER to disable
+                           also the GroupFrameT() resulting in less required
+                           space.
+
+                    - ALL: Added new Tooltype/DOS parameter WRITESTATS. If set
+                           NetMon writes down a RRD compatible stats file
+                           as Env. var to ENV: See docs for further description
+                           how this works.
+
+      (22-Oct-2004) - ALL: Changed again searching for program icon, now the
+                           real program icon is searched instead of using
+                           hard coded values.
+
+                      ALL: Fixed display bug in Exchange Info
+
+                      68K: Added more stack to program (~10kb), this should
+                           hopefully remove random crashes under Classics.
+
+
+V0.33 (18-Oct-2004) - ALL: Added Current Speed indicators for IN/OUT as
+                           separate displays inside the bubble help of the
+                           combined speed display.
+                           Reported by Richard de Rivaz
+
+                    - ALL: Changed version display in About window, now both
+                           bsdsocket library AND Roadshow versions are shown.
+                           As usual a big THANKS to Olaf for pointing this
+                           out.
+
+      (16-Oct-2004) - ALL: Added Maximum speed indicator as Bubble help to
+                           transfer speed display. It seeks for the highest
+                           transfer rates on both up- and download and record
+                           this numbers. Note that these values are not stored
+                           instead they are determined in runtime whenever NetMon
+                           is running.
+                           Reported by Richard de Rivaz
+
+                      ALL: Added bsdsocket.library versionsnumber to about window
+
+                    - ALL: Enhanced online display to switch to day counting
+                           after 48hours, this should improve readability
+
+V0.32 (15-Oct-2004) - 68k: NetMon.68k was still searching for the NetMon.info
+                           instead of using NetMon.68k icon. Fixed
+                           Reported by Richard de Rivaz
+
+                    - ALL: Speed was still calculated with fixed Refresh Time of
+                           5 seconds instead of using the value from external
+                           parameter. Fixed.
+
+                    - ALL: Changed formatting codes for online time, this should
+                           hopefully fix the strange display that happens under 68k
+                           Reported by Richard de Rivaz
+
+V0.31 (14-Oct-2004) - 68k: Fixed some strange problems with the about window,
+                           there seems to be some incompatiblity problems between
+                           gcc <-> sas/c compilers. Hopefully fixed.
+
+                      ALL: Added new Tooltype/CMD Arg INTERVAL which allows to
+                           change the refresh time down to a min. of 1 second.
+                           Defaults to 5seconds as it was in previous versions.
+                           Suggested by Richard de Rivaz
+
+V0.3  (12-Oct-2004) - Beta with 68k and PPC versions
+
+                    - Added 68k Version. This one was developed on WinUAE 0.9.1
+                      with OS 3.9 BB2 installed. Tested the 68k Version under
+                      OS4 and it works, too.
+
+                    - Added check for Roadshow. Previous versions always
+                      assumed that Roadshow was there, now with the Classic
+                      Version thats way too dangerous. You will get a notice
+                      if Roadshow cannot be found.
+
+      (10-Oct-2004) - Rewritten complete code to be OS 3.x compatible, adapted
+                      the code to have all differences between OS4 <-> OS3.x
+                      encapsulated in #defines.
+
+V0.2  (01-Jul-2004) - Next public release :)
+
+                    - Added Commandline Arg NOWINBORDER which opens main window
+                      without any window gadgets, so saving some room on your
+                      desk. If you start NetMon via WB then simply add the
+                      Tooltype NOWINBORDER, this has the same effect.
+                      Suggested by Vader from AW.net
+
+                    - Traffic calculation was wrong when someone downloads more
+                      than 2.2GB, the counter was negative :) Now fixed. Thanks
+                      to tomazkid from AW.net for reporting this.
+
+                    - Added IN/OUT display to total traffic volume display, so
+                      one can see how many bytes where transfered in which
+                      direction.
+
+V0.1  (30-Jun-2004) - First public release
+
+      (29-Jun-2004) - Added Speed display, hopefully I did not made any
+                      mistakes but compared to sample it seems to be correct :)
+
+                    - Added Bubble Help for the Interface Name, inside the
+                      bubble some infos are shown like IP address, MTU and
+                      bind type (static/DHCP).
+
+      (28-Jun-2004) - Initial Version. Displays cumulative volume of all
+                      available Interfaces in a small MUI application
+                      together with the interfaces online times. Design is
+                      very similar to MiamiDX' control panel :) Not working
+                      currently is speed display, this will be added soon.
+-----------------------------------------------------------------------------
+        Send suggestions and bug-reports to amigaone@in-ovation.de

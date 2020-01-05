@@ -1,0 +1,113 @@
+#####################################################
+# Makefile for NetMon.68k - Written by Sascha Pfalz #
+#                                                   #
+# Some parts based on Term's Smakefile              #
+#####################################################
+
+.c.o:
+	@echo NOLINE "*nCompiling $<..."
+	@sc NOVERBOSE $(CFLAGS) $<
+  @echo NOLINE "done.*n"
+
+####################
+# All object parts #
+####################
+
+OBJS=main.o rsfuncs.o NetMon_rev.o
+
+############################
+# Name of final Executable #
+############################
+
+PROGRAM = NetMon.68k
+
+###########################
+# CPU Type to compile for #
+###########################
+
+CPU=68020
+
+###########################
+# Roadshow SDK path
+###########################
+
+RS_SDK = Coder:sc/include/RoadShow-SDK/NetInclude
+
+#################################################
+# Define which will be shown inside Version tag #
+#################################################
+
+CPU_TYPE="68k"
+
+###################################################
+# Set OPTIMIZE=NOOPTIMIZE if you do not want this #
+###################################################
+
+OPTIMIZE=OPTIMIZE OPTIMIZERINLINELOCAL OPTIMIZERSCHEDULER OPTIMIZERTIME
+
+################################################
+# The compiler options to use are listed here: #
+################################################
+
+CCOPTS=IDIR=$(RS_SDK) MEMORYSIZE=HUGE IGNORE=315,306 PARAMS=R NOSTKCHK STRINGMERGE NOCHECKABORT COMMENTNEST NOMULTIPLEINCLUDES UTILITYLIBRARY STRINGSECTION=CODE
+
+
+##############################################
+# GST File to use for improved compile speed #
+##############################################
+
+#GSTFILE=CWORK:FAMEFTP/ftpd/FAME-FTPd.gst
+
+#####################################
+# Compiler settings, do not change! #
+#####################################
+
+CFLAGS = cpu=$(CPU) DEF=CPU_TYPE=$(CPU_TYPE) $(CCOPTS) $(OPTIMIZE)
+AFLAGS =	-d -u -dCPU_$(CPU) -dCPU='$(CPU)'
+LFLAGS =	quiet smallcode smalldata noicons nodebug STRIPDEBUG
+
+################
+# Default Rule #
+################
+
+all:	start prg
+
+#########################
+# Print Welcome message #
+#########################
+
+cls:
+    @cls
+
+start: cls
+ 		@echo "*nCreating $(PROGRAM) as $(CPU) Version"
+
+###########################
+# Compile the whole stuff #
+###########################
+
+prg:	$(OBJS)
+    @echo NOLINE "*nLinking $(PROGRAM)..."
+		@slink with <<
+		 from LIB:c.o $(OBJS) to $(PROGRAM) LIB LIB:scm.lib LIB:amiga.lib LIB:sc.lib $(LFLAGS)
+    <
+    @echo NOLINE "done.*n*nSize of Program: "
+    @List $(PROGRAM) NOHEAD LFORMAT="%l Bytes"
+    @echo ""
+
+################
+# Dependencies #
+################
+
+main.o: main.c NetMon_rev.h
+rsfuncs.o: rsfuncs.c NetMon_rev.h
+NetMon_rev.o: NetMon_rev.c
+
+###################################################################
+# Clean up all Objectfiles and also remove the Program executable #
+###################################################################
+
+clean:
+	@-echo NOLINE "*nRemoving Object- and Programfiles..."
+	@-delete quiet $(OBJS) $(PROGRAM) >NIL:
+  @-echo "done.*n"

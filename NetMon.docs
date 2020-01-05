@@ -1,0 +1,102 @@
+            Short docs for NetMon 0.1 by Sascha 'SieGeL' Pfalz
+-----------------------------------------------------------------------------
+
+NetMon is a small Network monitor for Roadshow. It works similar to MiamiDX'
+Control Panel and displays all defined interfaces together with their uptime,
+current Transfer rate in kb/s and the total traffic (up- and download).
+The display will be refreshed every 5 seconds (currently hard-coded) and should
+also react correctly on IP changings via DHCP (not tested).
+
+FEATURES:
+~~~~~~~~~
+
+- AmigaOS 4 native code!
+
+- Uses MUI
+
+- No config required, all required data will be determined
+  via Roadshow automatically.
+
+- Small output window which should not disturb too much on the desktop.
+
+
+REQUIREMENTS:
+~~~~~~~~~~~~~
+
+- AmigaOS 4 + MUI
+
+- Roadshow TCP/IP stack (must be started !)
+
+- Some room on your desktop :)
+
+
+USAGE:
+~~~~~~
+
+Double-click on icon. The display will show you an output similar to this:
+
+ 1.     2.        3.         4.          5.
+
+LAN | Active | 0.0 kb/s | 385.54 MB | 29:03:33
+
+1. Name of interface. If you leave the mouse over it it will show some
+   additional informations for this interface like IP, Linespeed, MTU and
+   bind type (static/DHCP)
+
+2. State of interface.
+
+3. Current speed in kb/s. Speed calculation averages over 5s, so do not
+   wonder if it sometimes differ a bit from Sample, which uses 1s interval
+   and is therefor much more accurate.
+
+4. Total volume transfered for this interface. This volume includes all data
+   and protocol header for up- and download transfers for this interface.
+
+5. How long the interface is online (HH:MM:SS)
+
+This display may of course differ depending on how many interfaces you have.
+
+
+TO-DO:
+~~~~~
+
+Here's a list of features I will add in future releases:
+
+- Add more menu entries which show all roadshow options like routes, DNS etc.
+
+- Put Interfaces online/offline with the supplied roadshow utilities
+
+- Locale support
+
+- Better icon (anybody?)
+
+- Anything else someone may find useful. Feel free to contact me under 
+  webmaster@saschapfalz.de
+
+
+Greetings and Thanks must go to:
+
+- Olaf 'Ohlsen' Barthel for supplying a lot of sources and infos to get this
+  up and running. And of course for all his great work on clib2 , Roadshow etc.
+
+- Hyperion Software for giving us the opportunity to start developing on the
+  best OS so far! Thanks for the Pre-Release, too!
+
+- Amigaworld.net for being the best Amiga Community site!
+
+- All other AmigaOS 4 users of course :-)
+
+
+CONTACT:
+~~~~~~~
+
+If you have found a bug or would like to give a suggestion to this or other
+tools made by me, just use one of the following addresses:
+
+   WWW: http://www.saschapfalz.de
+E-MAIL: webmaster@saschapfalz.de
+   ICQ: 9691810
+Telnet: siegel.dyndns.org 
+        (FAME on my a4000, will be running until OS4 is final!)
+
+--------------------------------------------------------------------[EOF]----

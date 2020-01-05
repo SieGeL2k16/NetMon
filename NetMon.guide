@@ -1,0 +1,263 @@
+@database NetMon.guide
+@$VER: NetMon.guide V0.34 (07-Nov-2004)
+@author "Sascha 'SieGeL' Pfalz (Sascha.Pfalz@t-online.de)"
+@(c) "© 2004 Sascha 'SieGeL' Pfalz"
+@index Main
+@wordwrap
+@node "Main" "NetMon documentation"
+
+
+                               @{b}NetMon V0.34@{ub}
+
+                  written & (c) by Sascha 'SieGeL' Pfalz
+
+                       Network Monitor for Roadshow
+
+
+                      @{b}@{u}Contents of this documentation:@{ub}@{uu}
+
+          @{"    INTRODUCTION    " LINK INTRO} - Info and requirements
+          @{"  CONFIG AND USAGE  " LINK CONFIG} - How to configure and use
+          @{"   WHAT'S MISSING   " LINK TODO} - Missing bits and To-Do list
+          @{" GREETS AND CONTACT " LINK CONTACT} - Thanks and Greets
+          @{"      ABOUT MUI     " LINK MUI} - Info about MUI
+
+
+                    NetMon uses codeparts from Roadshow
+                 written and (c) by Olaf 'Ohlsen' Barthel
+
+           NetMon uses MUI, a Graphical User Interface Extension
+                     written and (c) by Stefan Stuntz
+
+@endnode
+
+@node "INTRO" "Infos and requirements of NetMon"
+
+@{u}@{b}Introduction@{ub}@{uu}
+
+Well after recieving my copy of AmigaOS 4 Pre I've started to discover what
+the Pre-release has to offer for me. One of the important things I need is a working
+TCP/IP stack. So I was happy that the PR was shipped together with RoadShow,
+a native TCP/IP stack for AOS4 written by Olaf Barthel. As is typical with Olaf's
+software setting up Roadshow was as easy as it can be, but it lacks some kind
+of informational display that shows what actually happens when using Roadshow. You have
+a bunch of Shell tools to query the stack, but nothing compared to MiamiDX'
+nice control panel on Classic Amigas.
+So I've started to code NetMon to get back my good old NetInfo Display on
+my workbench. This time its using MUI and works only for Roadshow, as I'm using
+a lot of native functions provided by Roadshow.
+
+NetMon currently can display all defined interfaces together with some basic
+information about every device, like: Current avg. transferspeed, total
+volume transfered (also broken down in Up/Down traffic),online time and state
+of interface. All information are queried from Roadshow and the display will
+update every 5 seconds.
+
+
+@{b}@{u}Requirements@{ub}@{uu}
+
+To run NetMon, you need the following:
+
+- AmigaOS 3.x (68k) or AmigaOS 4 (PPC)
+
+- MUI
+
+- RoadShow
+
+Roadshow must be started else this tool won't work.
+
+@endnode
+
+@node "CONFIG" "How to configure and use NetMon"
+
+@{b}@{u}Configuration and Usage@{uu}@{ub}
+
+NetMon supports options that can be configured depending how you start the Tool.
+
+1. Start from Shell:
+
+New Cli:> NetMon [NOWINBORDER] [WRITESTATS] [INTERVAL=<seconds>]
+
+
+@{b}NOWINBORDER@{ub} (Default is off):
+
+If you use the argument NOWINBORDER all normal GUI elements like close, depth
+and size gadgets are disabled, only a small border remains. If started without
+this argument the window is rendered together with all GUI elements.
+
+
+@{b}WRITESTATS@{ub} (Default is off):
+
+This is new for V0.34 and if set will cause NetMon to dump out all Statistics
+of all interfaces as Environment variables to directory @{b}ENV:@{ub}.
+This maybe useful if you want to add the data to some graphical loggers like
+rrdtool for example. Whenever the display is updated based on the interval setting
+an environment variable for every interface is written, too. The Filename of the
+stats is formatted as follows:
+
+ENV:NetMon_Stats.<INTERFACENAME>
+
+So if you have LAN as Interface configured, the according statistics file will
+be named "NetMon_Stats.LAN".
+
+The variable contains one line with all required data for external data logging
+separated by a colon (:). Here is an example:
+
+---[SNIP]---
+
+1098568674:39289:0.00:18850:0.00:20439:0.00:0.01:0.01
+
+---[SNAP]---
+
+And here's the definition of the fields:
+
+ 1. Timestamp
+ 2. Total Bytes in/out (combined value)
+ 3. Total speed in kb/s (in/out, combined value)
+ 4. Bytes (in)
+ 5. Speed in kb/s (in)
+ 6. Bytes (out)
+ 7. Speed in kb/s (out)
+ 8. Max. Speed kb/s (in)
+ 9. Max. Speed kb/s (out)
+
+
+@{b}INTERVAL=<update_interval>@{ub} (Default is 5 seconds)
+
+Via this tooltype one can choose a different update interval for NetMon. If
+not given it defaults to 5 seconds. If you want a faster update interval,
+you may use this Parameter and set your favourite update interval. Note that
+the smallest value is 1 while the upper is not limited. Keep in mind that
+using too frequent update intervals can slow down the machine if you have
+many interfaces defined!
+
+
+2. Start from WB:
+
+Same options as described under SHELL STARTUP are used, only you have to add
+them as Tooltypes.
+
+
+3. RUNNING NETMON
+
+So just start it in your favourite way, and a small window will open which
+will look a bit similar to this:
+
+     LAN        | Active | 0.0 kb/s | 385.54 MB | 29:03:33
+      1.            2.        3.         4.          5.
+
+
+@{b}1.@{ub} Name of interface. If you leave the mouse over it; it will show some
+   additional information for this interface like IP, Linespeed, MTU and
+   bind type (static/DHCP)
+
+@{b}2.@{ub} State of interface. Can be one of: Offline, Online,Inactive,Active
+
+@{b}3.@{ub} Current speed in kb/s. Speed calculation averages over your choosen
+   interval, so don't wonder if it sometimes differ a bit from Sample, which
+   uses 1s interval and is therefor much more accurate.
+   There is also a bubble defined for this display which shows the speed broken
+   down in up/down traffic together with their maximum speed reached.
+
+@{b}4.@{ub} Total amount transfered for this interface. The amount includes all data
+   and protocol headers for up- and download transfers for this interface.
+   If you leave the mouse over it a bubble will be shown which lists the
+   traffic broken down in Up and Down to have a better overview.
+
+@{b}5.@{ub} How long the interface is online (HH:MM:SS)
+
+The display may of course differ depending on how many interfaces you have.
+Also the display will be changed to a day counter once your System is running for
+more than 48 hours.
+
+I don't think theres much else to say about the usage, the tool
+should be pretty self explanatory :)
+
+One thing to remember: Max. values for speed calculations are not stored, they
+are dynamically calculated based on current throughput. So if you restart NetMon
+you will loose these informations, even when the Stack is not restarted!
+
+@endnode
+
+@node "TODO" "Missing bits and To-Do list"
+
+@{b}@{u}Missing bits and To-Do list@{uu}@{ub}
+
+Of course Software is never complete, and this is true for NetMon, too. So
+here is a list of things I will add in future releases:
+
+- Create an AmiDock Docky tool from it
+
+- Add more menu entries which show all roadshow options like routes, DNS etc.
+
+- Put Interfaces online/offline with either the supplied roadshow utilities
+  or via own code, will see how much work is involved.
+
+- Locale support...if anybody cares about it. For me english is ok :)
+
+- Better icon (If any of these famous artists could draw one..would be nice!)
+
+See @{"contact" LINK CONTACT} if you have anything else to suggest.
+
+@endnode
+
+@node "CONTACT" "Thanks and Greetings"
+
+@{b}@{u}Greetings@{uu}@{ub}
+
+- Olaf 'Ohlsen' Barthel for supplying a lot of sources and info to get this
+  up and running. And of course for all his great work on clib2 , Roadshow etc.
+
+- Hyperion Software for giving us the opportunity to start developing on the
+  best OS so far! Thanks for the Pre-Release, too!
+
+- Ryu for proof-reading this guide for a better reading experience :-)
+
+- Richard de Rivaz for reporting a lot of suggestions
+
+- Amigaworld.net for being the best Amiga Community site, especially the ppl
+  who reported bugs and suggestions
+
+- All other AmigaOS 4 users of course :-)
+
+@{b}@{u}How to contact me@{uu}@{ub}
+
+@{b}   WWW:@{ub} http://www.saschapfalz.de
+@{b}E-MAIL:@{ub} Sascha.Pfalz@t-online.de
+@{b}   ICQ:@{ub} 9691810
+@{b}Telnet:@{ub} siegel.dyndns.org (FAME on my a4000, will be running until OS4 is final!)
+
+@endnode
+
+@node "MUI" "About MUI..."
+
+------------------------------------------------------------------------
+                        MUI - MagicUserInterface
+
+                              Version 3.9
+
+                  (c) Copyright 1992-2004, Stefan Stuntz
+------------------------------------------------------------------------
+
+MUI  is  an object oriented system to create and maintain graphical user
+interfaces.  From  a programmers point of view, using MUI saves a lot of
+time  and  makes life much easier. Thinking about complicated terms like
+window resizing or font sensitivity is simply not neccesary.
+
+On  the  other hand, users of MUI based applications have the ability to
+customize  nearly every pixel of a programs interface according to their
+personal taste.
+
+Please click on the Install-MUI icon to install MUI on your system or to
+update from previous versions.  Latest news and support  can be found on
+Internet at www.sasg.com.
+
+                              ***********
+
+                               Attention
+
+    If you're still not registered for MUI, check the new and unique
+  shareware lottery and great discounts at www.sasg.com. Give it a try!
+
+@endnode
+

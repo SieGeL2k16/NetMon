@@ -1,0 +1,18 @@
+VERSION		EQU	0
+REVISION	EQU	35
+
+DATE	MACRO
+		dc.b '26.12.2006'
+		ENDM
+
+VERS	MACRO
+		dc.b 'NetMon 0.35'
+		ENDM
+
+VSTRING	MACRO
+		dc.b 'NetMon 0.35 (26.12.2006)',13,10,0
+		ENDM
+
+VERSTAG	MACRO
+		dc.b 0,'$VER: NetMon 0.35 (26.12.2006)',0
+		ENDM
